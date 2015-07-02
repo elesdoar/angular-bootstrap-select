@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="demoapp">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap -->
+        <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+        <script src="bower_components/angular/angular.min.js"></script>
+        <script src="dist/angular-bootstrap-select.min.js"></script>
+
+        <script>
+            var app = angular.module("demoapp", ["angular-bootstrap-select"]);
+            app.controller("BasicController", [ "$scope", function($scope) {
+                angular.extend($scope, {
+                });
+           }]);
+        </script>
+    </head>
+    <body ng-controller="BasicController">
+        <ab-select></ab-select>
+    </body>
+</html>
