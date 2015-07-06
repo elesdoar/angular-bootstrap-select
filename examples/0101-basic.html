@@ -13,17 +13,75 @@
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
         <script src="bower_components/angular/angular.min.js"></script>
-        <script src="dist/angular-bootstrap-select.min.js"></script>
+        <script src="dist/angular-bootstrap-select.js"></script>
 
         <script>
             var app = angular.module("demoapp", ["angular-bootstrap-select"]);
             app.controller("BasicController", [ "$scope", function($scope) {
                 angular.extend($scope, {
+                    simple: {
+                        options: ["Mustard", "Ketchup", "Relish"],
+                    },
+                    grouped: {
+                        options: [{
+                            label: "Mustard",
+                            group: "Picnic"
+                        }, {
+                            label: "Ketchup",
+                            group: "Picnic"
+                        }, {
+                            label: "Relish",
+                            group: "Picnic"
+                        }, {
+                            label: "Tent",
+                            group: "Camping"
+                        }, {
+                            label: "Flashlight",
+                            group: "Camping"
+                        }, {
+                            label: "Toilet Paper",
+                            group: "Camping"
+                        }],
+                    },
+                    multiple: {
+                        options: ["Mustard", "Ketchup", "Relish"],
+                        value: []
+                    },
                 });
            }]);
         </script>
+
+        <style>
+            body {
+                margin: 30px;
+            }
+
+            .container {
+                max-width: 400px;
+            }
+        </style>
     </head>
     <body ng-controller="BasicController">
-        <ab-select></ab-select>
+        <div class="container">
+            <form name="basicForm">
+                <div class="form-group">
+                    <label for="simple">Simple</label>
+                    <ab-select id="simple" class="form-control" ng-options="option for option in simple.options" ng-model="simple.value">
+                    </ab-select>
+                </div>
+                <div class="form-group">
+                    <label for="grouped">Grouped</label>
+                    <ab-select id="grouped" class="form-control" ng-options="option.label group by option.group for option in grouped.options"
+                        ng-model="simple.value">
+                    </ab-select>
+                </div>
+                <div class="form-group">
+                    <label for="multiple">Multiple</label>
+                    <ab-select id="multiple" name="multiple[]" class="form-control" ng-options="option for option in multiple.options"
+                        ng-model="multiple.value" multiple>
+                    </ab-select>
+                </div>
+            </form>
+        </div>
     </body>
 </html>

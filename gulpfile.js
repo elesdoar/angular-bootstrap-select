@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 
+var batch = require('gulp-batch');
 var browserSync = require('browser-sync');
 var concat = require('gulp-concat');
 var del = require('del');
@@ -9,8 +10,9 @@ var reload = browserSync.reload;
 var rename = require('gulp-rename');
 var templateCache = require('gulp-angular-templatecache');
 var uglify = require('gulp-uglify');
+var watch = require('gulp-watch');
 
-gulp.task('default', ['clean', 'min', 'serve']);
+gulp.task('default', ['build', 'watch', 'serve']);
 
 gulp.task('clean', function() {
   del('./dist/**/*');
@@ -45,6 +47,12 @@ gulp.task('min', ['concat'], function() {
     .pipe(gulp.dest('./dist/'));
 });
 
+gulp.task('watch', function() {
+  watch(['src/**/*.js', 'templates/**/*.html'], batch(function(events, done) {
+    gulp.start('build', done);
+  }));
+});
+
 gulp.task('serve', function() {
   browserSync({
     server: {
@@ -57,5 +65,8 @@ gulp.task('serve', function() {
     }
   });
 
+
   gulp.watch(['dist/**/*.js', 'examples/**/*'], {}, reload);
 });
+
+gulp.task('build', ['clean', 'min']);

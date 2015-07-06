@@ -1,15 +1,58 @@
 angular.module('angular-bootstrap-select', []).directive('abSelect',
-  function ($log) {
+  function ($timeout, $log) {
     return {
       restrict: 'EA',
       replace: true,
-      scope: {
-
-      },
-      transclude: true,
+      require: ['?ngModel', '?ngOptions'],
+      scope: false,
+      transclude: false,
       templateUrl: 'angular-bootstrap-select/select.html',
-      link: function(scope, element, attrs, ctrl) {
-        $log.debug('Angular Select Bootstrap', ctrl);
+      link: function(scope, element, attrs, ngModel) {
+        $log.debug('Angular Select Bootstrap', scope);
+        if(!ngModel) {
+          return;
+        }
+
+        function refresh(newVal) {
+          $log.debug('New Val', newVal);
+          if(angular.isUndefined(newVal)) {
+            return;
+          }
+
+          scope.$applyAsync(function () {
+            if (attrs.ngOptions && /track by/.test(attrs.ngOptions)) {
+              element.selectpicker('val', newVal);
+            }
+            element.selectpicker('refresh');
+          });
+        }
+
+        $timeout(function() {
+          element.selectpicker(attrs);
+          element.selectpicker('refresh');
+          element.selectpicker('render');
+        });
+
+        if (attrs.ngModel) {
+          scope.$watch(attrs.ngModel, refresh, true);
+        }
+
+        if (attrs.ngDisabled) {
+          scope.$watch(attrs.ngDisabled, refresh, true);
+        }
+
+        scope.$watch('selected', function(val) {
+          if(!val) {
+            return;
+          }
+          $log.debug('Val', val);
+        }, true);
+
+        scope.$on('$destroy', function () {
+          $timeout(function () {
+            element.selectpicker('destroy');
+          });
+        });
       }
     };
   }
